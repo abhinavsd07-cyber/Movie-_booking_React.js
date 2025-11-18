@@ -1,0 +1,10 @@
+.footer {
+  background: black;
+  color: #c4c4c4;
+  padding: 30px 0;
+  margin-top: 40px;
+}
+.footer-title { color: #fff; font-weight: 600; margin-bottom: 10px; }
+.footer-links { list-style: none; padding-left: 0; }
+.footer-links a { color: #c4c4c4; text-decoration: none; }
+.footer-copy { color: #888; margin-top: 10px; }

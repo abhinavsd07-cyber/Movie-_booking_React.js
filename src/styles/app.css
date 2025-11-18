@@ -1,0 +1,12 @@
+body {
+  background: #fff;
+  color: #222;
+  font-family: Inter, Arial, sans-serif;
+  margin: 0;
+}
+
+.hero img { filter: brightness(0.85); }
+
+.movies-section {
+  background: linear-gradient(180deg, #fff 0%, #f7f7f7 100%);
+}

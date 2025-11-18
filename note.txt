@@ -1,0 +1,12 @@
+ <Carousel fade interval={3000} className="mb-4">
+        {heroSlides.map((img, index) => (
+          <Carousel.Item key={index}>
+            <img
+              src={img}
+              className="d-block w-100"
+              style={{ height: "450px", objectFit: "cover" }}
+              alt="Slide"
+            />
+          </Carousel.Item>
+        ))}
+      </Carousel>
