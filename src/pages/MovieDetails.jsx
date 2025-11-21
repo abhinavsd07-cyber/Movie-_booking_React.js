@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axiosConfig from "../api/axiosConfig";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchMovie = async () => {
       try {
         const res = await axiosConfig.get(`/movies/${id}`);
         setMovie(res.data);
@@ -16,31 +17,35 @@ const MovieDetails = () => {
         console.error(err);
       }
     };
-    fetch();
+    fetchMovie();
   }, [id]);
 
   if (!movie) return <Container className="py-5">Loading...</Container>;
 
   return (
-    <Container className="py-5"  >
-      <Row>
-        <Col md={4}>
-          <img src={movie.poster} alt={movie.name} style={{ width: "100%", borderRadius: 8 }} />
-        </Col>
+    <Container className="py-5">
+      <h2>{movie.name}</h2>
 
-        <Col md={8}>
-          <h2>{movie.name}</h2>
-          <p><strong>Director:</strong> {movie.director}</p>
+      <div style={{ display: "flex", gap: 25, marginTop: 25 }}>
+        <img
+          src={movie.poster}
+          alt={movie.name}
+          style={{ width: 260, borderRadius: 10 }}
+        />
+
+        <div>
           <p><strong>Genre:</strong> {movie.genre}</p>
-          <p><strong>Year:</strong> {movie.year}</p>
           <p><strong>Rating:</strong> ⭐ {movie.rating}</p>
+          <p><strong>Description:</strong> {movie.description}</p>
 
-          <div className="mt-3 d-flex gap-2">
-            <Link to={`/book/${movie.id}`}><Button variant="primary">Book Tickets</Button></Link>
-            <Link to="/"><Button variant="outline-secondary">Back</Button></Link>
-          </div>
-        </Col>
-      </Row>
+          <Button
+            variant="success"
+            onClick={() => navigate(`/book/${movie.id}`)}
+          >
+            Book Ticket
+          </Button>
+        </div>
+      </div>
     </Container>
   );
 };

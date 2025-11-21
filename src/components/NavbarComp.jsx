@@ -15,7 +15,7 @@ const NavbarComp = () => {
   return (
     <Navbar  expand="lg" sticky="top" style={{backgroundColor:"black"}}>
       <Container>
-        <Navbar.Brand as={Link} to="/"><img src="https://play-lh.googleusercontent.com/TB_8RMvDjxGmx06LBK-8opRFJ0msb6hSZalEtOMBmxgJ4jYE_i0BmdRuMWChCE76tLnxoytZ75Cew_r0_JDd" alt="" style={{height:"50px"}} /></Navbar.Brand>
+        <Navbar.Brand as={Link} to="/"><img src="https://www.startupterminal.com/wp-content/uploads/2017/08/main-qimg-e61922a041b88f6de69505f19e150a57.png" alt="" style={{height:"50px"}} /></Navbar.Brand>
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav">
           <Nav className="me-auto">

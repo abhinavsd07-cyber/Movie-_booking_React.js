@@ -1,31 +1,29 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import { Card, Button } from "react-bootstrap";
 import "../styles/MovieCard.css";
 
 const MovieCard = ({ movie }) => {
   return (
-    <Card className="movie-card border" style={{backgroundColor:"black"}}>
-      <div className="img-wrapper">
-        <Card.Img
-          variant="top"
-          src={movie.poster || "https://via.placeholder.com/300x450?text=No+Image"}
-          className="movie-img"
-          alt={movie.name}
-         style={{objectFit:"contain"}}/>
-      </div>
+    <Card className="movie-card border" style={{backgroundColor:"black",color:"white"}}>
+      <Card.Img
+        variant="top"
+        src={movie.poster}
+        alt={movie.name}
+        className="movie-img"
+      />
 
-      <Card.Body className="card-body-dark">
-        <Card.Title className="movie-title text-light">{movie.name}</Card.Title>
-        <Card.Text className="movie-meta">
-          {movie.genre} • {movie.year} <br />
-          Director: {movie.director} • ⭐ {movie.rating}
-        </Card.Text>
+      <Card.Body>
+        <Card.Title className="movie-title">{movie.name}</Card.Title>
 
-        <div className="d-grid gap-2">
-          <Button as={Link} to={`/movie/${movie.id}`} variant="light">Details</Button>
-          <Button as={Link} to={`/book/${movie.id}`} variant="danger">Book</Button>
+        <div className="btn-row">
+          <Link to={`/movie/${movie.id}`}>
+            <Button variant="dark" size="sm">Details</Button>
+          </Link>
+
+          <Link to={`/book/${movie.id}`}>
+            <Button variant="success" size="sm">Book Now</Button>
+          </Link>
         </div>
       </Card.Body>
     </Card>

@@ -12,71 +12,122 @@ const BookTicket = () => {
   const [seats, setSeats] = useState(1);
   const [time, setTime] = useState(times[0]);
   const [screen, setScreen] = useState(screens[0]);
+
   const navigate = useNavigate();
 
+  // ----------------------------------------------
+  // Fetch movie data
+  // ----------------------------------------------
   useEffect(() => {
-    const fetch = async () => {
+    const fetchMovie = async () => {
       try {
         const res = await axiosConfig.get(`/movies/${id}`);
         setMovie(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Movie fetch error:", err);
       }
     };
-    fetch();
+    fetchMovie();
   }, [id]);
 
+  // ----------------------------------------------
+  // BOOK TICKET
+  // ----------------------------------------------
   const handleBook = async () => {
     if (!movie) return;
+
+    if (seats < 1) {
+      alert("Please select at least 1 seat");
+      return;
+    }
+
+    const ticket = {
+      id: Math.random().toString(36).substring(2, 10), // unique ID
+      movieId: movie.id,
+      movieName: movie.name,
+      poster: movie.poster,
+      seats: Number(seats),
+      time,
+      screen,
+      bookingDate: new Date().toISOString().slice(0, 10),
+      bookingId: Math.random().toString(36).substring(2, 8),
+    };
+
     try {
-      const ticket = {
-        id: Math.random().toString(36).substring(2, 9),
-        movieId: movie.id,
-        movieName: movie.name,
-        poster: movie.poster,
-        seats: Number(seats),
-        time,
-        screen,
-        bookingDate: new Date().toISOString().slice(0, 10),
-        bookingId: Math.random().toString(36).substring(2, 8)
-      };
-      await axiosConfig.post("/tickets", ticket);
-      // navigate to success and pass ticket via state
+      await axiosConfig.post("/tickets", ticket); // Render-safe POST
       navigate("/ticket-success", { state: { ticket } });
     } catch (err) {
-      console.error(err);
-      alert("Booking failed");
+      console.error("Ticket booking error:", err);
+      alert("Booking failed! Try again.");
     }
   };
 
-  if (!movie) return <Container className="py-5">Loading...</Container>;
+  if (!movie)
+    return (
+      <Container className="py-5 text-center">
+        <h4>Loading movie details...</h4>
+      </Container>
+    );
 
   return (
     <Container className="py-5">
-      <h3>Book for: {movie.name}</h3>
-      <div style={{ display: "flex", gap: 20, marginTop: 20 }}>
-        <img src={movie.poster} alt={movie.name} style={{ width: 180, borderRadius: 8 }} />
+      <h3>Book Tickets — {movie.name}</h3>
+
+      <div style={{ display: "flex", gap: 20, marginTop: 30 }}>
+        {/* Movie Poster */}
+        <img
+          src={movie.poster}
+          alt={movie.name}
+          style={{ width: 200, borderRadius: 10 }}
+        />
+
+        {/* Booking Form */}
         <div style={{ flex: 1 }}>
           <Form.Group className="mb-3">
-            <Form.Label>Seats</Form.Label>
-            <Form.Control type="number" min={1} value={seats} onChange={(e) => setSeats(e.target.value)} style={{ width: 120 }} />
+            <Form.Label>Number of Seats</Form.Label>
+            <Form.Control
+              type="number"
+              min="1"
+              value={seats}
+              onChange={(e) => setSeats(Number(e.target.value))}
+              style={{ width: 150 }}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Show Time</Form.Label>
-            <Form.Select value={time} onChange={(e) => setTime(e.target.value)} style={{ width: 200 }}>
-              {times.map((t) => <option key={t}>{t}</option>)}
+            <Form.Select
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              style={{ width: 220 }}
+            >
+              {times.map((t) => (
+                <option key={t}>{t}</option>
+              ))}
             </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Screen</Form.Label>
-            <Form.Select value={screen} onChange={(e) => setScreen(e.target.value)} style={{ width: 200 }}>
-              {screens.map((s) => <option key={s}>{s}</option>)}
+            <Form.Select
+              value={screen}
+              onChange={(e) => setScreen(e.target.value)}
+              style={{ width: 220 }}
+            >
+              {screens.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
             </Form.Select>
           </Form.Group>
 
-          <Button variant="primary" onClick={handleBook}>Confirm Booking</Button>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={handleBook}
+            style={{ marginTop: 10 }}
+          >
+            Confirm Booking
+          </Button>
         </div>
       </div>
     </Container>
